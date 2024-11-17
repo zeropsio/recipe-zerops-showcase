@@ -113,11 +113,11 @@ zerops:
       deployFiles:
         - app
         - replace.env
-#    deploy:
-#      readinessCheck:
-#        httpGet:
-#          path: /health
-#          port: 8081
+    deploy:
+      readinessCheck:
+        httpGet:
+          path: /health
+          port: 8081
     run:
       envVariables:
         OTHER_PORT_ENV: 8081
@@ -126,5 +126,3 @@ zerops:
         target:
           - replace.env
       start: ./app serve
-
-    # cache
