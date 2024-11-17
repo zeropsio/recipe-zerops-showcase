@@ -1,0 +1,24 @@
+project:
+  name: recipe-zerops-showcase
+services:
+  - hostname: build
+    type: alpine@3.20
+    buildFromGit: https://github.com/zeropsio/recipe-zerops-showcase
+  - hostname: buildwithenvs
+    type: alpine@3.20
+    buildFromGit: https://github.com/zeropsio/recipe-zerops-showcase
+  - hostname: buildwithprepare
+    type: alpine@3.20
+    buildFromGit: https://github.com/zeropsio/recipe-zerops-showcase
+  - hostname: addtorunprepare
+    type: alpine@3.20
+    buildFromGit: https://github.com/zeropsio/recipe-zerops-showcase
+  - hostname: runwithinit
+    type: alpine@3.20
+    buildFromGit: https://github.com/zeropsio/recipe-zerops-showcase
+  - hostname: runwithenvs
+    type: alpine@3.20
+    buildFromGit: https://github.com/zeropsio/recipe-zerops-showcase
+  - hostname: runwithreplacer
+    type: alpine@3.20
+    buildFromGit: https://github.com/zeropsio/recipe-zerops-showcase

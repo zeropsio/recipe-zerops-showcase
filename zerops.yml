@@ -1,0 +1,130 @@
+zerops:
+  - setup: build
+    build:
+      base: go@latest
+      buildCommands:
+        - go build -o app main.go
+      deployFiles:
+        - app
+    deploy:
+      readinessCheck:
+        httpGet:
+          path: /health
+          port: 8080
+    run:
+      start: ./app serve
+
+  - setup: buildwithenvs
+    build:
+      base: go@latest
+      envVariables:
+        COMMIT: my-commit
+      buildCommands:
+        - echo "$COMMIT"
+        # Inject build time variable 'Commit', that is later returned by '/health' endpoint and './app commit' command.
+        - go build -ldflags "-X main.Commit=$COMMIT" -o app main.go
+      deployFiles:
+        - app
+    deploy:
+      readinessCheck:
+        exec:
+          # FIXME(tikinang): Change to ./app when fixed.
+          # Check the 'Commit' variable, that was injected by go build in build phase.
+          command: '[ "$(/var/www/app commit)" == "my-commit" ]'
+    run:
+      start: ./app serve
+
+  - setup: buildwithprepare
+    build:
+      base: go@latest
+      prepareCommands:
+        - sudo apk update
+        - sudo apk add jq
+      buildCommands:
+        - jq --version # Check that jq is installed.
+        - go build -o app main.go
+      deployFiles:
+        - app
+    deploy:
+      readinessCheck:
+        httpGet:
+          path: /health
+          port: 8080
+    run:
+      start: ./app serve
+
+  - setup: addtorunprepare
+    build:
+      base: go@latest
+      buildCommands:
+        - go build -o app main.go
+      addToRunPrepare:
+        - app
+      deployFiles:
+        - app
+    deploy:
+      readinessCheck:
+        exec:
+          command: cat /var/www/migration.txt
+    run:
+      prepareCommands:
+        - ./app migrate
+      start: ./app serve
+
+  - setup: runwithinit
+    build:
+      base: go@latest
+      buildCommands:
+        - go build -o app main.go
+      deployFiles:
+        - app
+    deploy:
+      readinessCheck:
+        httpGet:
+          path: /health
+          port: 8080
+    run:
+      initCommands:
+        - mkdir -p ./cache
+      start: ./app serve --check-cache-dir
+
+  - setup: runwithenvs
+    build:
+      base: go@latest
+      buildCommands:
+        - go build -o app main.go
+      deployFiles:
+        - app
+    deploy:
+      readinessCheck:
+        httpGet:
+          path: /health
+          port: 8081 # Changed check port from 8080.
+    run:
+      envVariables:
+        APP_PORT: 8081
+      start: ./app serve
+
+  - setup: runwithreplacer
+    build:
+      base: go@latest
+      buildCommands:
+        - go build -o app main.go
+      deployFiles:
+        - app
+        - replace.env
+#    deploy:
+#      readinessCheck:
+#        httpGet:
+#          path: /health
+#          port: 8081
+    run:
+      envVariables:
+        OTHER_PORT_ENV: 8081
+      envReplace:
+        delimiter: '%%'
+        target:
+          - replace.env
+      start: ./app serve
+
+    # cache
