@@ -1,6 +1,39 @@
 project:
   name: recipe-zerops-showcase
 services:
+  # Managed databases and storages.
+  - hostname: objectstorage
+    type: object-storage
+    objectStorageSize: 5
+
+  - hostname: keydb
+    type: keydb@6
+    mode: NON_HA
+  - hostname: valkey
+    type: valkey@7.2
+    mode: NON_HA
+  - hostname: elasticsearch
+    type: elasticsearch@8.16
+    mode: NON_HA
+  - hostname: mariadb
+    type: mariadb@10.6
+    mode: NON_HA
+  - hostname: postgresql
+    type: postgresql@16
+    mode: NON_HA
+  - hostname: kafka
+    type: kafka@3.8
+    mode: NON_HA
+  - hostname: qdrant
+    type: qdrant@1.12
+    mode: NON_HA
+  - hostname: meilisearch
+    type: meilisearch@1.10
+    mode: NON_HA
+  - hostname: nats
+    type: nats@2.10
+    mode: NON_HA
+
   - hostname: build
     type: alpine@3.20
     buildFromGit: https://github.com/zeropsio/recipe-zerops-showcase
