@@ -5,7 +5,10 @@ services:
   - hostname: objectstorage
     type: object-storage
     objectStorageSize: 5
-
+  - hostname: sharedstorage
+    priority: 10
+    type: sharedstorage
+    mode: NON_HA
   - hostname: keydb
     type: keydb@6
     mode: NON_HA
@@ -35,23 +38,29 @@ services:
     mode: NON_HA
 
   - hostname: build
-    type: alpine@3.20
+    type: alpine@3.21
     buildFromGit: https://github.com/zeropsio/recipe-zerops-showcase
+    enableSubdomainAccess: true
   - hostname: buildwithenvs
-    type: alpine@3.20
+    type: alpine@3.21
     buildFromGit: https://github.com/zeropsio/recipe-zerops-showcase
   - hostname: buildwithprepare
-    type: alpine@3.20
+    type: alpine@3.21
     buildFromGit: https://github.com/zeropsio/recipe-zerops-showcase
   - hostname: addtorunprepare
-    type: alpine@3.20
+    type: alpine@3.21
     buildFromGit: https://github.com/zeropsio/recipe-zerops-showcase
   - hostname: runwithinit
-    type: alpine@3.20
+    type: alpine@3.21
     buildFromGit: https://github.com/zeropsio/recipe-zerops-showcase
   - hostname: runwithenvs
-    type: alpine@3.20
+    type: alpine@3.21
     buildFromGit: https://github.com/zeropsio/recipe-zerops-showcase
   - hostname: runwithreplacer
-    type: alpine@3.20
+    type: alpine@3.21
     buildFromGit: https://github.com/zeropsio/recipe-zerops-showcase
+  - hostname: mounted
+    type: alpine@3.21
+    buildFromGit: https://github.com/zeropsio/recipe-zerops-showcase
+    mount:
+      - sharedstorage

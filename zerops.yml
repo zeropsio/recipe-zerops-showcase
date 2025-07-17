@@ -12,6 +12,9 @@ zerops:
           path: /health
           port: 8080
     run:
+      ports:
+        - port: 8080
+          httpSupport: true
       start: ./app serve
 
   - setup: buildwithenvs
@@ -126,3 +129,11 @@ zerops:
         target:
           - replace.env
       start: ./app serve
+
+  - setup: mounted
+    run:
+      initCommands:
+        - ls -la /mnt/sharedstorage
+        - date >> /mnt/sharedstorage/date.txt
+        - cat /mnt/sharedstorage/date.txt
+      start: zsc noop
