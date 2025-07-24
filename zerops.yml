@@ -16,6 +16,7 @@ zerops:
         - port: 8080
           httpSupport: true
       start: ./app serve
+      location: ranpu
 
   - setup: buildwithenvs
     build:

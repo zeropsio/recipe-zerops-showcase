@@ -39,7 +39,7 @@ services:
 
   - hostname: build
     type: alpine@3.21
-    buildFromGit: https://github.com/zeropsio/recipe-zerops-showcase
+    buildFromGit: https://github.com/zeropsio/recipe-zerops-showcase@multiregion
     enableSubdomainAccess: true
   - hostname: buildwithenvs
     type: alpine@3.21
